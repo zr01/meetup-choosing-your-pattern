@@ -17,7 +17,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @WithSpan
     public Person createUser(Person person) {
-        log.debug("Create person {}, externalId -> {}", person, person.externalId());
+        log.debug("Create person {}, id -> {}", person, person.id());
         // Save to DB here
         return person;
     }
@@ -27,7 +27,6 @@ public class PersonServiceImpl implements PersonService {
     public Person getUserById(UUID id) {
         log.debug("Retrieving person by ID {}", id);
         return new Person(
-            0L,
             id,
             UUID.randomUUID().toString(),
             UUID.randomUUID().toString(),

@@ -33,3 +33,31 @@ services:
       - '9411:9411'
       - '4318:4318'
       - '4317:4317'
+
+  db-legacy:
+    image: postgres:16-alpine
+    container_name: db-legacy
+    environment:
+      POSTGRES_DB: customer
+      POSTGRES_PASSWORD: zxcvbnm
+    ports:
+      - '15432:5432'
+
+  db-vthreads:
+    image: postgres:16-alpine
+    container_name: db-vthreads
+    environment:
+      POSTGRES_DB: customer
+      POSTGRES_PASSWORD: asdfghjkl
+    ports:
+      - '25432:5432'
+
+  flyway:
+    image: flyway/flyway
+    container_name: db-migration
+    volumes:
+#      - './flyway/config/legacy.conf:/flyway/conf/flyway.conf'
+      - './flyway/config/vthreads.conf:/flyway/conf/flyway.conf'
+      - './flyway/db_migration/:/flyway/sql'
+    extra_hosts:
+      - host.docker.internal:host-gateway

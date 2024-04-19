@@ -25,9 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("com.zaxxer:HikariCP")
-    implementation("org.postgresql:postgresql")
+
     implementation("io.opentelemetry:opentelemetry-api")
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:2.3.0")
     implementation("de.codecentric:chaos-monkey-spring-boot:3.1.0")

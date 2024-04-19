@@ -1,6 +1,7 @@
 package studio.camelcase.meetup.controllers;
 
 import io.micrometer.core.annotation.Timed;
+import java.time.LocalDate;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,6 @@ public class PersonController {
 
     static Person toDb(PersonRequest from) {
         return new Person(
-            0L,
             UUID.randomUUID(),
             from.firstName(),
             from.middleName(),
@@ -57,7 +57,7 @@ public class PersonController {
 
     static PersonResponse toResponse(Person from) {
         return new PersonResponse(
-            from.externalId(),
+            from.id(),
             from.firstName(),
             from.middleName(),
             from.lastName(),
