@@ -9,4 +9,6 @@ CREATE TABLE customers
   birth_date  date      not null
 );
 
-CREATE INDEX idx_customers_external_id ON customers(external_id);
+-- CREATE INDEX idx_customers_external_id ON customers(external_id);
+
+ALTER SEQUENCE customers_id_seq OWNED BY customers.id;

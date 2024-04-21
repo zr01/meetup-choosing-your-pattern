@@ -7,5 +7,5 @@ public interface PersonService {
 
     Person createUser(Person person);
 
-    Person getUserById(UUID id);
+    Person getUserByExternalId(UUID externalId) throws RuntimeException;
 }

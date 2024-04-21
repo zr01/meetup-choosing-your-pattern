@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,34 +36,46 @@ public class PersonController {
         return toResponse(newPerson);
     }
 
+    @GetMapping("/{externalId}")
+    public PersonResponse getUserByExternalId(
+        @PathVariable UUID externalId
+    ) {
+        log.debug("Getting user by external ID [{}]", externalId);
+        var p = toResponse(
+            personService.getUserByExternalId(externalId)
+        );
+        log.info("Successfully Retrieved user by eternal ID [{}]", p.id());
+        return p;
+    }
+
     @GetMapping("/random")
     @Timed(value = "random.person.generate", percentiles = {0.5, 0.9, 0.99}, extraTags = {"random.person.generate"})
     public PersonResponse getRandom() {
-        var p = toResponse(personService.getUserById(UUID.randomUUID()));
+        var p = toResponse(personService.getUserByExternalId(UUID.randomUUID()));
         log.info("Random person generated {}", p);
         return p;
     }
 
     static Person toDb(PersonRequest from) {
-        return new Person(
-            0L,
-            UUID.randomUUID(),
-            from.firstName(),
-            from.middleName(),
-            from.lastName(),
-            from.gender(),
-            from.birthDate()
-        );
+        return Person.builder()
+            .id(null)
+            .externalId(UUID.randomUUID())
+            .firstName(from.firstName())
+            .middleName(from.middleName())
+            .lastName(from.lastName())
+            .gender(from.gender())
+            .birthDate(from.birthDate())
+            .build();
     }
 
     static PersonResponse toResponse(Person from) {
         return new PersonResponse(
-            from.externalId(),
-            from.firstName(),
-            from.middleName(),
-            from.lastName(),
-            from.gender(),
-            from.birthDate()
+            from.getExternalId(),
+            from.getFirstName(),
+            from.getMiddleName(),
+            from.getLastName(),
+            from.getGender(),
+            from.getBirthDate()
         );
     }
 }

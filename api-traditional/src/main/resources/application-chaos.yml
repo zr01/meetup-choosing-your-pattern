@@ -6,7 +6,7 @@ chaos:
       rest-controller: false
     assaults:
       latency-active: true
-      level: 3
+      level: 500
       deterministic: true
       exceptions-active: false
       exception:
