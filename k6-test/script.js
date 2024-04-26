@@ -4,7 +4,7 @@ export const options = {
   // A number specifying the number of VUs to run concurrently.
   vus: 10,
   // A string specifying the total duration of the test run.
-  duration: '180s',
+  duration: '120s',
 };
 
 // The function that defines VU logic.
@@ -13,7 +13,8 @@ export const options = {
 // about authoring k6 scripts.
 //
 export default function() {
-  const url = 'http://localhost:9080/person';
+  // const url = 'http://localhost:9080/person/sync';
+  const url = 'http://localhost:9080/person/async';
   const payload = JSON.stringify({
     firstName: 'firstName',
     middleName: 'midName',

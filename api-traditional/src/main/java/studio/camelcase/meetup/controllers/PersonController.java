@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import studio.camelcase.meetup.controllers.models.PersonRequest;
 import studio.camelcase.meetup.controllers.models.PersonResponse;
+import studio.camelcase.meetup.metrics.ApplicationMetrics;
 import studio.camelcase.meetup.repositories.models.Person;
 import studio.camelcase.meetup.services.PersonService;
 
@@ -23,17 +24,34 @@ public class PersonController {
     static final Logger log = LoggerFactory.getLogger(PersonController.class);
 
     private final PersonService personService;
+    private final ApplicationMetrics appMetrics;
 
-    public PersonController(PersonService personService) {
+    public PersonController(
+        PersonService personService,
+        ApplicationMetrics appMetrics
+    ) {
         this.personService = personService;
+        this.appMetrics = appMetrics;
     }
 
-    @PostMapping
+    @PostMapping("/async")
     public PersonResponse postCreateUser(@RequestBody PersonRequest request) {
-        log.debug("Received the request of creating a user for {}", request);
-        var newPerson = personService.createUser(toDb(request));
-        log.info("Created person {}", newPerson);
-        return toResponse(newPerson);
+        log.debug("Received the request of async creating a user for {}", request);
+        var dbRecord = toDb(request);
+        personService.createUserAsync(dbRecord);
+        log.info("Created person {} asynchronously", dbRecord);
+        appMetrics.requestInc();
+        return toResponse(dbRecord);
+    }
+
+    @PostMapping("/sync")
+    public PersonResponse postCreateUserSync(@RequestBody PersonRequest request) {
+        log.debug("Received the request of sync creating a user for {}", request);
+        var dbRecord = toDb(request);
+        personService.createUserSync(dbRecord);
+        log.info("Created person {} synchronously", dbRecord);
+        appMetrics.requestInc();
+        return toResponse(dbRecord);
     }
 
     @GetMapping("/{externalId}")
