@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: api-reactive
+  r2dbc:
+    url: r2dbc:postgresql://localhost:15432/postgres
+    username: postgres
+    password: zxcvbnm
+server:
+  port: 9080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true

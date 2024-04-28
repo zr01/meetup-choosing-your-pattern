@@ -1,5 +1,17 @@
 ### Create Person
-POST http://localhost:9080/person
+POST http://localhost:9080/person/sync
+Content-Type: application/json
+
+{
+  "firstName": "{{$random.alphabetic(12)}}",
+  "lastName": "{{$random.alphabetic(12)}}",
+  "middleName": "{{$random.alphabetic(12)}}",
+  "gender": "X",
+  "birthDate": "2000-01-01"
+}
+
+### Create Person RX
+POST http://localhost:8080/person/sync
 Content-Type: application/json
 
 {

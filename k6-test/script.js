@@ -2,7 +2,7 @@ import http from 'k6/http';
 
 export const options = {
   // A number specifying the number of VUs to run concurrently.
-  vus: 10,
+  vus: 50,
   // A string specifying the total duration of the test run.
   duration: '120s',
 };
