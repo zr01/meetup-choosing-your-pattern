@@ -38,6 +38,7 @@ public class PersonServiceImpl implements PersonService {
         var saved = personRepository.save(person);
         log.info("Async created person with id {}", saved.getExternalId());
         appMetrics.asyncInc();
+        appMetrics.createdInc();
         return CompletableFuture.completedFuture(saved);
     }
 
@@ -48,6 +49,7 @@ public class PersonServiceImpl implements PersonService {
         var saved = personRepository.save(person);
         log.info("Sync created person with id {}", saved.getExternalId());
         appMetrics.syncInc();
+        appMetrics.createdInc();
         return saved;
     }
 

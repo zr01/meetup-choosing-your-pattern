@@ -12,6 +12,7 @@ public class ApplicationMetrics {
     Counter ctrPostCreate;
     Counter ctrCreatedAsync;
     Counter ctrCreatedSync;
+    Counter ctrCreated;
 
     public ApplicationMetrics(
         MeterRegistry registry
@@ -19,6 +20,9 @@ public class ApplicationMetrics {
         this.registry = registry;
         ctrPostCreate = Counter.builder("person_create_requested")
             .tags("method", "POST", "by", "sync")
+            .register(registry);
+        ctrCreated = Counter.builder("person_created")
+            .tags("method", "SAVED", "by", "db")
             .register(registry);
         ctrCreatedSync = Counter.builder("person_created_synchronously")
             .tags("method", "DIRECT", "by", "sync")
@@ -39,4 +43,6 @@ public class ApplicationMetrics {
     public void asyncInc() {
         ctrCreatedAsync.increment();
     }
+
+    public void createdInc() { ctrCreated.increment(); }
 }
